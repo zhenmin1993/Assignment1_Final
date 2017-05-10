@@ -583,13 +583,11 @@ class YMatrixBuild():
                     if one_has_line in self.has_line_between or self.reverse_list(one_has_line) in self.has_line_between:
                         continue
                     self.has_line_between.append(one_has_line)
-                    one_cond_rdf = self.CondEquipBetween[key_start][key_term]
-                    if len(one_cond_rdf) == 1:
-                        one_cond_rdf = one_cond_rdf[0]
-                    if len(one_cond_rdf) == 3:
-                        one_cond_rdf = one_cond_rdf[1]
-                    self.cond_rdf_between.append(one_cond_rdf)
-                    one_bch_value = self.ConductingEquipmentTable[one_cond_rdf]['bch_pu']
+                    cond_rdfs = self.CondEquipBetween[key_start][key_term]
+                    one_bch_value = 0
+                    for rdf in cond_rdfs:
+                        if self.ConductingEquipmentTable[rdf]['Type'] == 'ACLineSegment':
+                            one_bch_value = one_bch_value + self.ConductingEquipmentTable[rdf]['bch_pu']
                     self.line_bch_value.append(one_bch_value/2)
         
         for dup_busbar in self.duplicate_busbar:
