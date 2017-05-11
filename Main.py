@@ -423,7 +423,7 @@ win.AddLabel('Database Name' , Lab_Para_dbName, dbNameStructLab)
 
 global var_dbName
 var_dbName=StringVar()
-var_dbName.set('5bus')
+var_dbName.set('Input Database Name here')
 
 Entr_Para_dbName = {'off':400,'on':300, 'show':None}
 dbNameStructEntr = {'row':5, 'column':1,'sticky':W}
@@ -484,7 +484,7 @@ win.AddLabel('EQ File Name' , Lab_Para_EQName, EQNameStructLab)
 
 global var_EQName
 var_EQName=StringVar()
-var_EQName.set('microgrid_EQ_New.xml')
+var_EQName.set('Please input EQ file name here')
 
 Entr_Para_EQName = {'off':400,'on':300, 'show':None}
 EQNameStructEntr = {'row':10, 'column':1,'sticky':W}
@@ -498,7 +498,7 @@ win.AddLabel('SSH File Name' , Lab_Para_SSHName, SSHNameStructLab)
 
 global var_SSHName
 var_SSHName=StringVar()
-var_SSHName.set('microgrid_SSH_New.xml')
+var_SSHName.set('Please input SSH file name here')
 
 Entr_Para_SSHName = {'off':400,'on':300, 'show':None}
 SSHNameStructEntr = {'row':11, 'column':1,'sticky':W}
