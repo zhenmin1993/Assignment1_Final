@@ -675,7 +675,6 @@ class YMatrixBuild():
                     #print self.nodeConnectionDict[rdf]['isBusbar']
                     if self.nodeConnectionDict[rdf]['isBusbar'] == 'true':
                         self.admittance_table[key_nn][key_nn] = self.admittance_table[key_nn][key_nn] + complex(value_sc['g_pu'],value_sc['b_pu'])
-                        #print key_nn
                     if self.nodeConnectionDict[rdf]['isBusbar'] == 'false':
                         for dup_busbar in self.duplicate_busbar:
                             if key_nn in dup_busbar:

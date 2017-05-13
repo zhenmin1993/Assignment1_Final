@@ -655,6 +655,16 @@ class Feed_Table_LSC(Base_Feed_Table):
                 print "no sections in this element"
         return sectionss
 
+    def get_controlEnables_lsc(self):
+        controlEnables = list()
+        all_element_table = self.struct('SSH')
+        for item in all_element_table:
+            try:
+                controlEnables_temp = item.getContent('cim:RegulatingCondEq.controlEnabled')
+                controlEnables.append(controlEnables_temp)
+            except:
+                print "no controlEnables in this element"
+        return controlEnables
 
     def SSH_feed_LSC(self,sql_update):
         rdfIDs = list()
@@ -663,8 +673,11 @@ class Feed_Table_LSC(Base_Feed_Table):
         sectionss = list()
         sectionss = self.get_sections_lsc()
 
+        controlEnables = list()
+        controlEnables = self.get_controlEnables_lsc()
+
         for iter in range(len(rdfIDs)):
-            data  = (sectionss[iter] , rdfIDs[iter])
+            data  = (sectionss[iter], controlEnables[iter] , rdfIDs[iter])
 
             self.table_update_normal(sql_update, data)
         self.conn.commit()

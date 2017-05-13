@@ -141,7 +141,7 @@ BBS_name_type = {'name':v,'equipmentContainer_rdf':v}
 
 #LSC = LineShuntCompensator
 LSC_name_type = {'name':v, 'bPerSection':f, 'gPerSection':f, \
-                'nomU':f, 'equipmentContainer_rdf':v, 'sections' : f}
+                'nomU':f, 'equipmentContainer_rdf':v, 'sections' : f, 'controlEnabled' : v}
 
 #Create New Tables
 if New_Table_Choice == 1:
@@ -529,7 +529,7 @@ LinearShuntCompensatorTable.table_write_ID()
 LinearShuntCompensatorTable.feed_LSC("""UPDATE LinearShuntCompensator SET name=%s, bPerSection = %s, 
             gPerSection = %s, nomU = %s ,equipmentContainer_rdf = %s  WHERE rdf = %s """)
 
-LinearShuntCompensatorTable.SSH_feed_LSC("""UPDATE LinearShuntCompensator SET sections = %s WHERE rdf = %s """)
+LinearShuntCompensatorTable.SSH_feed_LSC("""UPDATE LinearShuntCompensator SET sections = %s, controlEnabled = %s WHERE rdf = %s """)
 
 
 New_Message = 'Table LinearShuntCompensator Writen Succeed!'
