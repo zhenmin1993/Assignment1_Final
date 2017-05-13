@@ -12,7 +12,7 @@ import os
 
 #*********These classes are inherated from the class in BaseClass
 
-#Build a instance to insert the records in to table BaseVoltage
+#Build a class to insert the records in to table BaseVoltage
 class Feed_Table_BV(Base_Feed_Table):
 
     def feed_BV(self, sql_update):
@@ -27,7 +27,7 @@ class Feed_Table_BV(Base_Feed_Table):
 
         print ''
 
-#Build a instance to insert the records in to table Substation
+#Build a class to insert the records in to table Substation
 class Feed_Table_SS(Base_Feed_Table):            
 
     def feed_SS(self, sql_update):
@@ -44,7 +44,7 @@ class Feed_Table_SS(Base_Feed_Table):
         print ''
 
 
-#Build a instance to insert the records in to table VoltageLevel
+#Build a class to insert the records in to table VoltageLevel
 class Feed_Table_VL(Base_Feed_Table):
 
     def feed_VL(self, sql_update):
@@ -63,7 +63,7 @@ class Feed_Table_VL(Base_Feed_Table):
         print ''
 
 
-#Build a instance to insert the records in to table GeneratingUnit
+#Build a class to insert the records in to table GeneratingUnit
 class Feed_Table_GU(Base_Feed_Table):
 
     def feed_GU(self, sql_update):
@@ -189,7 +189,7 @@ class Feed_Table_SYM(Base_Feed_Table):
         print ''
 
 
-#Build a instance to insert the records in to table RegulatingControl
+#Build a class to insert the records in to table RegulatingControl
 class Feed_Table_RC(Base_Feed_Table):
 
     def feed_RC(self, sql_update):
@@ -221,7 +221,7 @@ class Feed_Table_RC(Base_Feed_Table):
         print ''
 
 
-#Build a instance to insert the records in to table PowerTransformer
+#Build a class to insert the records in to table PowerTransformer
 class Feed_Table_PT(Base_Feed_Table):
 
     def feed_PT(self, sql_update):
@@ -240,7 +240,7 @@ class Feed_Table_PT(Base_Feed_Table):
 
         print ''
 
-#Build a instance to insert the records in to table EnergyConsumer
+#Build a class to insert the records in to table EnergyConsumer
 class Feed_Table_EC(Base_Feed_Table):
 
     def feed_EC(self, sql_update):
@@ -281,7 +281,7 @@ class Feed_Table_EC(Base_Feed_Table):
 
 
 
-#Build a instance to insert the records in to table PowerTransformerEnd
+#Build a class to insert the records in to table PowerTransformerEnd
 class Feed_Table_PTE(Base_Feed_Table):
 
 #This case is special so we can't use the get_rdf_normal function
@@ -353,7 +353,7 @@ class Feed_Table_PTE(Base_Feed_Table):
         print ''
 
 
-#Build a instance to insert the records in to table Breaker
+#Build a class to insert the records in to table Breaker
 class Feed_Table_BR(Base_Feed_Table):
 
     def feed_BR(self, sql_update):
@@ -404,7 +404,7 @@ class Feed_Table_BR(Base_Feed_Table):
         print ''
 
 
-#Build a instance to insert the records in to table RatioTapChanger
+#Build a class to insert the records in to table RatioTapChanger
 class Feed_Table_RTC(Base_Feed_Table):
 
     def feed_RTC(self, sql_update):
@@ -455,7 +455,7 @@ class Feed_Table_RTC(Base_Feed_Table):
 
 
 
-#Build a instance to insert the records in to table ACLineSegment
+#Build a class to insert the records in to table ACLineSegment
 class Feed_Table_ACL(Base_Feed_Table):
 
     def get_baseVoltage_rdf_acl(self):
@@ -506,7 +506,7 @@ class Feed_Table_ACL(Base_Feed_Table):
 
 
 
-#Build a instance to insert the records in to table ConnectivityNode
+#Build a class to insert the records in to table ConnectivityNode
 class Feed_Table_CNN(Base_Feed_Table):
 
     def feed_CNN(self, sql_update):
@@ -525,7 +525,7 @@ class Feed_Table_CNN(Base_Feed_Table):
         print ''
 
 
-#Build a instance to insert the records in to table RatioTapChanger
+#Build a class to insert the records in to table RatioTapChanger
 class Feed_Table_TMN(Base_Feed_Table):
 
     def feed_TMN(self, sql_update):
@@ -578,7 +578,7 @@ class Feed_Table_TMN(Base_Feed_Table):
 
 
 
-#Build a instance to insert the records in to table RatioTapChanger
+#Build a class to insert the records in to table RatioTapChanger
 class Feed_Table_BBS(Base_Feed_Table):
 
     def feed_BBS(self, sql_update):
