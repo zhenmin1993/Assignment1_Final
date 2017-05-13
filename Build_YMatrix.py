@@ -56,7 +56,7 @@ class YMatrixBuild():
     def build_ShuntCompensatorTable(self):
         self.ShuntCompensatorTable = dict()
         sql_build_ShuntCompensatorTable = """SELECT rdf,name,bPerSection,gPerSection,nomU,sections,
-            equipmentContainer_rdf FROM LinearShuntCompensator"""
+            equipmentContainer_rdf, controlEnabled FROM LinearShuntCompensator"""
         self.cur.execute(sql_build_ShuntCompensatorTable)
         ShuntCompensatorRecords = self.cur.fetchall()
         
@@ -68,6 +68,7 @@ class YMatrixBuild():
             tempShuntCompensator['nomU'] = Record[4]
             tempShuntCompensator['sections'] = Record[5]
             tempShuntCompensator['equipmentContainer_rdf'] = Record[6]
+            tempShuntCompensator['controlEnabled'] = Record[7]
             tempShuntCompensator['b_pu'] = Record[2]/Record[4]/Record[4]*self.S_MVA * Record[5]
             tempShuntCompensator['g_pu'] = Record[3]/Record[4]/Record[4]*self.S_MVA * Record[5]
             self.ShuntCompensatorTable[Record[0]] = tempShuntCompensator
@@ -664,9 +665,9 @@ class YMatrixBuild():
                     self.ShuntCompensatorTable[key_sc]['ConnectivityNode_rdf'] = value_tmn['ConnectivityNode_rdf']
         for key_sc, value_sc in self.ShuntCompensatorTable.items():
             for key_nn, value_nn in self.nodeNo_rdf.items():
-                if value_sc['ConnectivityNode_rdf'] == value_nn:
+                if value_sc['ConnectivityNode_rdf'] == value_nn and value_sc['controlEnabled'] == 'false':
                     self.admittance_table[key_nn][key_nn] = self.admittance_table[key_nn][key_nn] + complex(value_sc['g_pu'],value_sc['b_pu'])
-                    #print value_sc['g_pu'],value_sc['b_pu'], key_nn
+                    print value_sc['g_pu'],value_sc['b_pu'], key_nn
 
 
     #Output
