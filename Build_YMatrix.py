@@ -657,6 +657,8 @@ class YMatrixBuild():
                 self.admittance_table[bus_number][bus_number] = self.admittance_table[bus_number][bus_number] + complex(0,self.line_bch_value[iter_line])
 
         #print self.admittance_table
+    
+    #Add linearShuntCompensator if they are not controllable
     def add_shuntcompensator(self):
         self.build_ShuntCompensatorTable()
         for key_sc, value_sc in self.ShuntCompensatorTable.items():
