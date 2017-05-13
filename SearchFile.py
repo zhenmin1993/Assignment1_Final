@@ -34,6 +34,7 @@ class AllChilds():
         self.Table_Names.append('Terminal')
         self.Table_Names.append('ConnectivityNode')
         self.Table_Names.append('BusbarSection')
+        self.Table_Names.append('LinearShuntCompensator')
 
 
 

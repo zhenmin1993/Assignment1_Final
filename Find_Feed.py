@@ -28,6 +28,7 @@ ACLineSegments = dict()
 ConnectivityNodes = dict()
 Terminals = dict()
 BusbarSections = dict()
+LinearShuntCompensators = dict()
 
 
 BaseVoltages['EQ'] = Needed_Child['EQ']['BaseVoltage']
@@ -51,6 +52,8 @@ ConnectivityNodes['EQ'] = Needed_Child['EQ']['ConnectivityNode']
 Terminals['EQ'] = Needed_Child['EQ']['Terminal']
 Terminals['SSH'] = Needed_Child['SSH']['Terminal']
 BusbarSections['EQ'] = Needed_Child['EQ']['BusbarSection']
+LinearShuntCompensators['EQ'] = Needed_Child['EQ']['LinearShuntCompensator']
+LinearShuntCompensators['SSH'] = Needed_Child['SSH']['LinearShuntCompensator']
 
 #Build instances of all the information
 BaseVoltageTable= Feed_Table_BV(BaseVoltages, cur, conn)
@@ -68,6 +71,7 @@ ACLineSegmentTable= Feed_Table_ACL(ACLineSegments, cur, conn)
 ConnectivityNodeTable= Feed_Table_CNN(ConnectivityNodes, cur, conn)
 TerminalTable= Feed_Table_TMN(Terminals, cur, conn)
 BusbarSectionTable = Feed_Table_BBS(BusbarSections, cur, conn)
+LinearShuntCompensatorTable = Feed_Table_LSC(LinearShuntCompensators, cur, conn)
 
 #Choose the column needed in the table
 #If one table has no foreign keys, it only has one dictionary including all the column names and their data format
@@ -134,6 +138,10 @@ TMN_FK_from_to = {'ConnectivityNode_rdf':'ConnectivityNode'}
 
 #BBS = BusbarSection
 BBS_name_type = {'name':v,'equipmentContainer_rdf':v}
+
+#LSC = LineShuntCompensator
+LSC_name_type = {'name':v, 'bPerSection':f, 'gPerSection':f, \
+                'nomU':f, 'equipmentContainer_rdf':v, 'sections' : f}
 
 #Create New Tables
 if New_Table_Choice == 1:
@@ -230,6 +238,11 @@ if New_Table_Choice == 1:
     Update_Status(New_Message, 'black')
     time.sleep(0.15)
 
+    LinearShuntCompensatorTable.New_Table_No_FK('LinearShuntCompensator',LSC_name_type)
+    New_Message = 'Table LinearShuntCompensator Created!'  
+    Update_Status(New_Message, 'black')
+    time.sleep(0.15)
+
 
     var_TabCheck.set('All Tables Created')
     Stat_Para_TabCheck_create = {'bd':1,'anchor':W, 'fg':'#228B22'}
@@ -319,17 +332,22 @@ if New_Table_Choice == 0:
     time.sleep(0.15)
 
     ConnectivityNodeTable.Exist_Table_No_FK('ConnectivityNode',CNN_name_type)
-    New_Message = 'Table ConnectivityNode Created!'  
+    New_Message = 'Table ConnectivityNode Checked!'  
     Update_Status(New_Message, 'black')
     time.sleep(0.15)
 
     TerminalTable.Exist_Table_Has_FK('Terminal',TMN_name_type, TMN_FK_from_to)
-    New_Message = 'Table Terminal Created!'  
+    New_Message = 'Table Terminal Checked!'  
     Update_Status(New_Message, 'black')
     time.sleep(0.15)
 
     BusbarSectionTable.Exist_Table_No_FK('BusbarSection',BBS_name_type)
-    New_Message = 'Table BusbarSection Created!'  
+    New_Message = 'Table BusbarSection Checked!'  
+    Update_Status(New_Message, 'black')
+    time.sleep(0.15)
+
+    LinearShuntCompensatorTable.Exist_Table_No_FK('LinearShuntCompensator',LSC_name_type)
+    New_Message = 'Table LinearShuntCompensator Checked!'  
     Update_Status(New_Message, 'black')
     time.sleep(0.15)
 
@@ -495,15 +513,28 @@ TerminalTable.feed_TMN("""UPDATE Terminal SET name=%s, ConductingEquipment_rdf =
 
 TerminalTable.SSH_feed_TMN("""UPDATE Terminal SET ConnectCondition = %s WHERE rdf = %s """)
 
-
-BusbarSectionTable.table_write_ID()
-BusbarSectionTable.feed_BBS("""UPDATE BusbarSection SET name=%s, equipmentContainer_rdf = %s  WHERE rdf = %s """)
-
-
 New_Message = 'Table Terminal Writen Succeed!'
 Update_Status(New_Message, 'black')
 time.sleep(0.2)
 
+BusbarSectionTable.table_write_ID()
+BusbarSectionTable.feed_BBS("""UPDATE BusbarSection SET name=%s, equipmentContainer_rdf = %s  WHERE rdf = %s """)
+
+New_Message = 'Table BusbarSection Writen Succeed!'
+Update_Status(New_Message, 'black')
+time.sleep(0.2)
+
+
+LinearShuntCompensatorTable.table_write_ID()
+LinearShuntCompensatorTable.feed_LSC("""UPDATE LinearShuntCompensator SET name=%s, bPerSection = %s, 
+            gPerSection = %s, nomU = %s ,equipmentContainer_rdf = %s  WHERE rdf = %s """)
+
+LinearShuntCompensatorTable.SSH_feed_LSC("""UPDATE LinearShuntCompensator SET sections = %s WHERE rdf = %s """)
+
+
+New_Message = 'Table LinearShuntCompensator Writen Succeed!'
+Update_Status(New_Message, 'black')
+time.sleep(0.2)
 
 
 New_Message = 'All Table Writen Succeed!'

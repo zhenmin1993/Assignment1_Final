@@ -85,7 +85,7 @@ class Feed_Table_GU(Base_Feed_Table):
         print ''
 
 
-#Build a instance to insert the records in to table synchronousmachine
+#Build a class to insert the records in to table synchronousmachine
 class Feed_Table_SYM(Base_Feed_Table):
 #This case is special so we can't use the get_content_normal function
 #They use "RotatingMachine" instead of "Synchronousmachine"
@@ -591,6 +591,81 @@ class Feed_Table_BBS(Base_Feed_Table):
         
         for iter in range(len(rdfIDs)):
             data  = (names[iter], equipmentContainer_rdfs[iter] , rdfIDs[iter])
+            self.table_update_normal(sql_update, data)
+        self.conn.commit()
+
+        print ''
+
+#Build a class to insert the records in to table synchronousmachine
+class Feed_Table_LSC(Base_Feed_Table):
+#This case is special so we can't use the get_content_normal function
+#They use "RotatingMachine" instead of "Synchronousmachine"
+    def get_nomU_lsc(self):
+        nomUs = list()
+        all_element_table = self.struct('EQ')
+        for item in all_element_table:
+            try:
+                nomU_temp = item.getContent('cim:ShuntCompensator.nomU')
+                nomUs.append(nomU_temp)
+            except:
+                print "no nomU in this element"
+        return nomUs
+
+
+    def feed_LSC(self, sql_update):
+        rdfIDs = list()
+        rdfIDs = self.get_IDs_EQ()
+
+        names = list
+        names = self.get_name()
+
+
+        bPerSections = list()
+        bPerSections = self.get_content_normal('bPerSection', 'EQ')
+
+        gPerSections = list()
+        gPerSections = self.get_content_normal('gPerSection', 'EQ')
+
+        nomUs = list()
+        nomUs = self.get_nomU_lsc()
+
+
+        equipmentContainer_rdfs = list()
+        equipmentContainer_rdfs = self.get_equipcontain_rdf()
+        
+        print names, bPerSections, gPerSections, nomUs, equipmentContainer_rdfs
+        
+        for iter in range(len(rdfIDs)):
+            data  = (names[iter] , bPerSections[iter], gPerSections[iter], nomUs[iter], \
+                equipmentContainer_rdfs[iter], rdfIDs[iter])
+
+            self.table_update_normal(sql_update, data)
+        self.conn.commit()
+
+        print ''
+
+    def get_sections_lsc(self):
+        sectionss = list()
+        all_element_table = self.struct('SSH')
+        for item in all_element_table:
+            try:
+                sections_temp = item.getContent('cim:ShuntCompensator.sections')
+                sectionss.append(sections_temp)
+            except:
+                print "no sections in this element"
+        return sectionss
+
+
+    def SSH_feed_LSC(self,sql_update):
+        rdfIDs = list()
+        rdfIDs = self.get_IDs_SSH()
+
+        sectionss = list()
+        sectionss = self.get_sections_lsc()
+
+        for iter in range(len(rdfIDs)):
+            data  = (sectionss[iter] , rdfIDs[iter])
+
             self.table_update_normal(sql_update, data)
         self.conn.commit()
 

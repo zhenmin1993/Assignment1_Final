@@ -51,6 +51,28 @@ class YMatrixBuild():
 
         #print self.voltageLevelTable
 
+    #Build a dictionary contains necessary information related to ShuntCompensator
+    #with rdfID as key
+    def build_ShuntCompensatorTable(self):
+        self.ShuntCompensatorTable = dict()
+        sql_build_ShuntCompensatorTable = """SELECT rdf,name,bPerSection,gPerSection,nomU,sections,
+            equipmentContainer_rdf FROM LinearShuntCompensator"""
+        self.cur.execute(sql_build_ShuntCompensatorTable)
+        ShuntCompensatorRecords = self.cur.fetchall()
+        
+        for Record in ShuntCompensatorRecords:
+            tempShuntCompensator = dict()
+            tempShuntCompensator['name'] = Record[1]
+            tempShuntCompensator['bPerSection_nominal'] = Record[2]
+            tempShuntCompensator['gPerSection_nominal'] = Record[3]
+            tempShuntCompensator['nomU'] = Record[4]
+            tempShuntCompensator['sections'] = Record[5]
+            tempShuntCompensator['equipmentContainer_rdf'] = Record[6]
+            tempShuntCompensator['b_pu'] = Record[2]/Record[4]/Record[4]*self.S_MVA * Record[5]
+            tempShuntCompensator['g_pu'] = Record[3]/Record[4]/Record[4]*self.S_MVA * Record[5]
+            self.ShuntCompensatorTable[Record[0]] = tempShuntCompensator
+        #print self.ShuntCompensatorTable
+
     #Build a dictionary contains necessary information related to ACLineSegment
     #with rdfID as key
     def build_lineTable(self):
@@ -631,15 +653,28 @@ class YMatrixBuild():
         #add line shunt capacitor
         for iter_line in range(len(self.has_line_between)):
             for bus_number in self.has_line_between[iter_line]:
-                self.admittance_table[bus_number][bus_number] = self.admittance_table[bus_number][bus_number] + self.line_bch_value[iter_line]
+                self.admittance_table[bus_number][bus_number] = self.admittance_table[bus_number][bus_number] + complex(0,self.line_bch_value[iter_line])
 
         #print self.admittance_table
+    def add_shuntcompensator(self):
+        self.build_ShuntCompensatorTable()
+        for key_sc, value_sc in self.ShuntCompensatorTable.items():
+            for key_tmn, value_tmn in self.terminalTable.items():
+                if value_tmn['ConductingEquipment_rdf'] == key_sc:
+                    self.ShuntCompensatorTable[key_sc]['ConnectivityNode_rdf'] = value_tmn['ConnectivityNode_rdf']
+        for key_sc, value_sc in self.ShuntCompensatorTable.items():
+            for key_nn, value_nn in self.nodeNo_rdf.items():
+                if value_sc['ConnectivityNode_rdf'] == value_nn:
+                    self.admittance_table[key_nn][key_nn] = self.admittance_table[key_nn][key_nn] + complex(value_sc['g_pu'],value_sc['b_pu'])
+                    #print value_sc['g_pu'],value_sc['b_pu'], key_nn
+
 
     #Output
     def build_YMatrix(self):
         self.combine_duplicate_busbar()
         self.impedance_to_admittance()
         self.add_self_admittance()
+        self.add_shuntcompensator()
         self.YMatrix = dict()
         self.matrix_bus_original_number = list()
         self.matrix_bus_new_number = list()

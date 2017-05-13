@@ -216,15 +216,6 @@ def ConfirmButtonFunc():
 #Define the function of 'Show' Button
 def BusButtonFunc():
     #Connect with MySQL server
-    print 'Connecting to MySQL server'
-    Message = 'Connecting to MySQL server'
-
-    var_ConnectCheck.set('Connecting to MySQL server')
-    Stat_Para_ConnectCheck = {'bd':1,'anchor':W, 'fg':'black'}
-    ConnectCheckStructStatus = {'row':12, 'sticky':N+E+S+W, 'columnspan':5, 'column':6}
-    win.AddStatus(Stat_Para_ConnectCheck, ConnectCheckStructStatus, var_ConnectCheck.get())
-    win.root.update()
-
     host =  var_host.get()
     user = var_user.get()
     passwd =  var_passwd.get()
@@ -232,27 +223,10 @@ def BusButtonFunc():
     port =  var_port.get()
     port = int(port)
 
-    try:
-        conn=MySQLdb.connect(host,user,passwd,db,port)
-        cur = conn.cursor()
-        Message = 'Connected to MySQL server'
-        print 'Connected to MySQL server\n'
-        var_ConnectCheck.set('Connected to MySQL server')
-        Stat_Para_ConnectCheck = {'bd':1,'anchor':W, 'fg':'#228B22'}
-        ConnectCheckStructStatus = {'row':12, 'sticky':N+E+S+W, 'columnspan':5, 'column':6}
-        win.AddStatus(Stat_Para_ConnectCheck, ConnectCheckStructStatus, var_ConnectCheck.get())
-        win.root.update()
 
+    conn=MySQLdb.connect(host,user,passwd,db,port)
+    cur = conn.cursor()
 
-    except:
-        Message = 'Connection Failed! Please Check!'
-        print 'Connection Failed! Please Check!'
-
-        var_ConnectCheck.set('Connection Failed! Please Check!')
-        Stat_Para_ConnectCheck = {'bd':1,'anchor':W, 'fg':'red'}
-        ConnectCheckStructStatus = {'row':12, 'sticky':N+E+S+W, 'columnspan':5, 'column':6}
-        win.AddStatus(Stat_Para_ConnectCheck, ConnectCheckStructStatus, var_ConnectCheck.get())
-        win.root.update()
     
     #Build Y Matrix
     Matrix = YMatrixBuild(cur,conn)
@@ -316,6 +290,8 @@ def BusButtonFunc():
     
     win.root.update()
     
+    BusStructButt = {'row':1+2*len(Bus_column),'column':4+len(Bus_column),'padx':0,'pady':1}
+    win.AddButton('Show', BusButtonFunc, BusStructButt)
 
     Exit3StructButt = {'row':1+2*len(Bus_column),'column':5+len(Bus_column),'padx':0,'pady':1}
     win.AddButton('Exit', ExitButtonFunc, Exit3StructButt)
@@ -423,7 +399,7 @@ win.AddLabel('Database Name' , Lab_Para_dbName, dbNameStructLab)
 
 global var_dbName
 var_dbName=StringVar()
-var_dbName.set('Input Database Name here')
+var_dbName.set('5bus')
 
 Entr_Para_dbName = {'off':400,'on':300, 'show':None}
 dbNameStructEntr = {'row':5, 'column':1,'sticky':W}
