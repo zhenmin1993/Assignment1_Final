@@ -635,7 +635,7 @@ class YMatrixBuild():
         for key_start, value_start in self.new_impedance_table.items():
             self.admittance_table[key_start] = dict()
             for key_term, value_term in value_start.items():
-                self.admittance_table[key_start][key_term] = 1/value_term
+                self.admittance_table[key_start][key_term] = -1/value_term
 
         
         #print self.admittance_table,'K'
@@ -647,16 +647,16 @@ class YMatrixBuild():
             self_admit = 0
             for key_term, value_term in value_start.items():
                 one_value_term = copy.deepcopy(value_term)
-                self_admit = self_admit + value_term
+                self_admit = self_admit - value_term
             self.admittance_table[key_start][key_start] = self_admit
-
+        #print self.admittance_table
 
         #add line shunt capacitor
         for iter_line in range(len(self.has_line_between)):
             for bus_number in self.has_line_between[iter_line]:
                 self.admittance_table[bus_number][bus_number] = self.admittance_table[bus_number][bus_number] + complex(0,self.line_bch_value[iter_line])
 
-        #print self.admittance_table
+        
     
     #Add linearShuntCompensator if they are not controllable
     def add_shuntcompensator(self):
